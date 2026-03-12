@@ -1,0 +1,24 @@
+[19:59:47.611] === InsertText START ===
+[19:59:47.627] text length=30, targetWindow=1969750
+[19:59:47.627] SetForegroundWindow => True, err=0
+[19:59:47.841] Current foreground: 1969750 (expected 1969750)
+[19:59:47.843] Found edit control: 0
+[19:59:47.843] Edit control not found, trying fallback with SendInput
+[19:59:47.866] Fallback: text copied to clipboard
+[19:59:47.969] Fallback SendInput Ctrl+V: sent=0, expected=4, err=87
+[20:00:00.524] === InsertText START ===
+[20:00:00.525] text length=47, targetWindow=1969750
+[20:00:00.525] SetForegroundWindow => True, err=0
+[20:00:00.732] Current foreground: 1969750 (expected 1969750)
+[20:00:00.733] Found edit control: 0
+[20:00:00.733] Edit control not found, trying fallback with SendInput
+[20:00:00.735] Fallback: text copied to clipboard
+[20:00:00.840] Fallback SendInput Ctrl+V: sent=0, expected=4, err=87
+[23:14:13.345] === InsertText START ===
+[23:14:13.363] text length=30, targetWindow=2819402
+[23:14:13.363] SetForegroundWindow => True, err=0
+[23:14:13.579] Current foreground: 2819402 (expected 2819402)
+[23:14:13.580] Found edit control: 0
+[23:14:13.580] Edit control not found, trying fallback with SendInput
+[23:14:13.600] Fallback: text copied to clipboard
+[23:14:13.704] Fallback SendInput Ctrl+V: sent=0, expected=4, err=87
