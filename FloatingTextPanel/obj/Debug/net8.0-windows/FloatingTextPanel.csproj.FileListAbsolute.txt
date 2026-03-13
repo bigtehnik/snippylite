@@ -1,0 +1,28 @@
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.exe
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.deps.json
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.runtimeconfig.json
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.pdb
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.AssemblyInfoInputs.cache
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.AssemblyInfo.cs
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.csproj.CoreCompileInputs.cache
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\refint\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.pdb
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.genruntimeconfig.cache
+C:\Users\Long\Downloads\CLAW\S\ws\FloatingTextPanel\obj\Debug\net8.0-windows\ref\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.exe
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.deps.json
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.runtimeconfig.json
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\bin\Debug\net8.0-windows\FloatingTextPanel.pdb
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.AssemblyInfoInputs.cache
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.AssemblyInfo.cs
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.csproj.CoreCompileInputs.cache
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\refint\FloatingTextPanel.dll
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.pdb
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\FloatingTextPanel.genruntimeconfig.cache
+C:\Users\Long\Downloads\CLAW\snippylite\snippylite-main (1)\snippylite-main\FloatingTextPanel\obj\Debug\net8.0-windows\ref\FloatingTextPanel.dll
