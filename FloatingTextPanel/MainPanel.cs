@@ -1,76 +1,22 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
 namespace FloatingTextPanel;
 
-/// <summary>
-/// Плавающая панель (20x50). ЛКМ — меню шаблонов, ПКМ — перетаскивание или меню управления.
-/// Окно скрыто из Alt+Tab.
-/// </summary>
 public sealed class MainPanel : Form
 {
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll")] private static extern IntPtr GetForegroundWindow();
 
-    [DllImport("user32.dll")]
-    private static extern bool SetForegroundWindow(IntPtr hWnd);
+    private const int CornerRadius = 3;
 
-    [DllImport("user32.dll")]
-    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
-    [DllImport("kernel32.dll")]
-    private static extern uint GetCurrentThreadId();
-
-    [DllImport("user32.dll")]
-    private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetFocus();
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-    // Fallback через SendInput
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct INPUT
-    {
-        public uint type;
-        public InputUnion u;
-    }
-
-    [StructLayout(LayoutKind.Explicit)]
-    private struct InputUnion
-    {
-        [FieldOffset(0)]
-        public KEYBDINPUT ki;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct KEYBDINPUT
-    {
-        public ushort wVk;
-        public ushort wScan;
-        public uint dwFlags;
-        public uint time;
-        public IntPtr dwExtraInfo;
-    }
-
-    private const uint INPUT_KEYBOARD = 1;
-    private const uint KEYEVENTF_KEYDOWN = 0x0000;
-    private const uint KEYEVENTF_KEYUP = 0x0002;
-
-    private const uint WM_CHAR = 0x0102;
-
-    private ContextMenuStrip _snippetsMenu;
-    private ContextMenuStrip _controlMenu;
-    private ToolStripMenuItem _settingsMenuItem;
-    private ToolStripMenuItem _reloadMenuItem;
-    private ToolStripMenuItem _exitMenuItem;
+    private ContextMenuStrip _snippetsMenu = new();
+    private ContextMenuStrip _controlMenu = new();
+    private ToolStripMenuItem _settingsMenuItem = new("Настройки...");
+    private ToolStripMenuItem _reloadMenuItem = new("Перезагрузить тексты");
+    private ToolStripMenuItem _exitMenuItem = new("Выход");
 
     private IntPtr _targetWindow;
     private bool _potentialDrag;
@@ -82,6 +28,20 @@ public sealed class MainPanel : Form
     public MainPanel()
     {
         InitializeComponent();
+
+        AutoScaleMode = AutoScaleMode.None;
+        MinimumSize = new Size(1, 1);
+
+        Width = 16;
+        Height = 80;
+
+        BackColor = Color.Black;
+
+        SetStyle(ControlStyles.AllPaintingInWmPaint |
+                 ControlStyles.UserPaint |
+                 ControlStyles.OptimizedDoubleBuffer |
+                 ControlStyles.ResizeRedraw, true);
+
         BuildMenus();
     }
 
@@ -90,7 +50,7 @@ public sealed class MainPanel : Form
         get
         {
             const int WS_EX_TOOLWINDOW = 0x00000080;
-            CreateParams cp = base.CreateParams;
+            var cp = base.CreateParams;
             cp.ExStyle |= WS_EX_TOOLWINDOW;
             return cp;
         }
@@ -98,20 +58,56 @@ public sealed class MainPanel : Form
 
     private void InitializeComponent()
     {
-        Width = 20;
-        Height = 50;
+        Width = 10;
+        Height = 40;
         FormBorderStyle = FormBorderStyle.None;
         TopMost = true;
         ShowInTaskbar = false;
-        BackColor = Color.LightSteelBlue;
         Cursor = Cursors.Hand;
 
-        MouseEnter += (s, e) => { BackColor = Color.CornflowerBlue; Invalidate(); };
-        MouseLeave += (s, e) => { BackColor = Color.LightSteelBlue; Invalidate(); };
+        MouseEnter += (s, e) => { Invalidate(); };
+        MouseLeave += (s, e) => { Invalidate(); };
 
         MouseDown += MainPanel_MouseDown;
         MouseMove += MainPanel_MouseMove;
         MouseUp += MainPanel_MouseUp;
+    }
+
+    // 🔵 Ограничение перемещения формы по экрану
+    private void ClampToScreen()
+    {
+        var screen = Screen.GetWorkingArea(this);
+
+        int x = Location.X;
+        int y = Location.Y;
+
+        if (x < screen.Left) x = screen.Left;
+        if (y < screen.Top) y = screen.Top;
+        if (x + Width > screen.Right) x = screen.Right - Width;
+        if (y + Height > screen.Bottom) y = screen.Bottom - Height;
+
+        Location = new Point(x, y);
+    }
+
+    // 🔵 Рисуем скруглённую кнопку
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        base.OnPaint(e);
+
+        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+        int r = CornerRadius;
+        int d = r * 2;
+
+        using var path = new GraphicsPath();
+        path.AddArc(0, 0, d, d, 180, 90);
+        path.AddArc(Width - d - 1, 0, d, d, 270, 90);
+        path.AddArc(Width - d - 1, Height - d - 1, d, d, 0, 90);
+        path.AddArc(0, Height - d - 1, d, d, 90, 90);
+        path.CloseFigure();
+
+        using var brush = new SolidBrush(Color.FromArgb(180, 0, 255));
+        e.Graphics.FillPath(brush, path);
     }
 
     private void MainPanel_MouseDown(object? sender, MouseEventArgs e)
@@ -133,22 +129,18 @@ public sealed class MainPanel : Form
         {
             if (_dragging)
             {
-                Point currentScreen = PointToScreen(e.Location);
-                int newX = currentScreen.X - _dragStartClient.X;
-                int newY = currentScreen.Y - _dragStartClient.Y;
-                Location = new Point(newX, newY);
+                var current = PointToScreen(e.Location);
+                Location = new Point(current.X - _dragStartClient.X, current.Y - _dragStartClient.Y);
+
+                ClampToScreen(); // ← теперь панель не убежит
             }
             else
             {
-                Point currentScreen = PointToScreen(e.Location);
-                int dx = Math.Abs(currentScreen.X - _dragStartScreen.X);
-                int dy = Math.Abs(currentScreen.Y - _dragStartScreen.Y);
-                if (dx > 3 || dy > 3)
+                var current = PointToScreen(e.Location);
+                if (Math.Abs(current.X - _dragStartScreen.X) > 3 ||
+                    Math.Abs(current.Y - _dragStartScreen.Y) > 3)
                 {
                     _dragging = true;
-                    int newX = currentScreen.X - _dragStartClient.X;
-                    int newY = currentScreen.Y - _dragStartClient.Y;
-                    Location = new Point(newX, newY);
                 }
             }
         }
@@ -162,9 +154,10 @@ public sealed class MainPanel : Form
             {
                 if (_downButton == MouseButtons.Left)
                     ShowSnippetsMenu();
-                else if (_downButton == MouseButtons.Right)
+                else
                     ShowControlMenu();
             }
+
             _potentialDrag = false;
             _dragging = false;
         }
@@ -195,7 +188,7 @@ public sealed class MainPanel : Form
 
         foreach (var snippet in collection.RootSnippets)
         {
-            var item = new ToolStripMenuItem(snippet.Name) { ImageKey = "document" };
+            var item = new ToolStripMenuItem(snippet.Name);
             item.Click += (s, e) => TextInserter.InsertText(snippet.Text, targetWnd);
             _snippetsMenu.Items.Add(item);
         }
@@ -204,22 +197,15 @@ public sealed class MainPanel : Form
         {
             _snippetsMenu.Items.Add(BuildMenuItem(node, targetWnd));
         }
-
-        if (_snippetsMenu.Items.Count == 0)
-        {
-            var empty = new ToolStripMenuItem("Нет шаблонов (откройте настройки)");
-            empty.Enabled = false;
-            _snippetsMenu.Items.Add(empty);
-        }
     }
 
     private ToolStripMenuItem BuildMenuItem(MenuNode node, IntPtr targetWnd)
     {
-        var item = new ToolStripMenuItem(node.Name) { ImageKey = "folder" };
+        var item = new ToolStripMenuItem(node.Name);
 
         foreach (var snippet in node.Snippets)
         {
-            var child = new ToolStripMenuItem(snippet.Name) { ImageKey = "document" };
+            var child = new ToolStripMenuItem(snippet.Name);
             child.Click += (s, e) => TextInserter.InsertText(snippet.Text, targetWnd);
             item.DropDownItems.Add(child);
         }
@@ -236,16 +222,17 @@ public sealed class MainPanel : Form
     {
         _controlMenu = new ContextMenuStrip();
 
-        _settingsMenuItem = new ToolStripMenuItem("Настройки...");
         _settingsMenuItem.Click += (s, e) => OpenSettings();
-
-        _reloadMenuItem = new ToolStripMenuItem("Перезагрузить тексты");
         _reloadMenuItem.Click += (s, e) => SnippetManager.Instance.Load();
-
-        _exitMenuItem = new ToolStripMenuItem("Выход");
         _exitMenuItem.Click += (s, e) => Application.Exit();
 
-        _controlMenu.Items.AddRange(new ToolStripItem[] { _settingsMenuItem, _reloadMenuItem, new ToolStripSeparator(), _exitMenuItem });
+        _controlMenu.Items.AddRange(new ToolStripItem[]
+        {
+            _settingsMenuItem,
+            _reloadMenuItem,
+            new ToolStripSeparator(),
+            _exitMenuItem
+        });
     }
 
     private void OpenSettings()

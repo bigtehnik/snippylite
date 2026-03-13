@@ -13,6 +13,10 @@ internal static class Program
     [STAThread]
     static void Main()
     {
+        // 🔥 ВАЖНО: отключаем DPI‑масштабирование,
+        // иначе окно не может быть меньше ~20×40
+        Application.SetHighDpiMode(HighDpiMode.DpiUnaware);
+
         ApplicationConfiguration.Initialize();
         Application.Run(new MainPanel());
     }
