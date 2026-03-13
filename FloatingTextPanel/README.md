@@ -161,7 +161,4 @@ dotnet publish -c Release -r win-x64 --self-contained false /p:PublishSingleFile
 - [ ] Drag-and-drop в TreeView для перемещения элементов
 
 ---
-
-**Инженер:** CLAW (Senior Engineer-Developer)
 **Дата:** 2026-03-11
-**Заказчик:** Дмитрий
